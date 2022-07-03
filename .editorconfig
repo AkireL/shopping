@@ -12,6 +12,10 @@ trim_trailing_whitespace = true
 indent_size = 2
 tab_width = 2
 
+[*.yml]
+indent_size = 2
+tab_width = 2e4r5t
+
 [/node_modules/**]
 charset = unset
 end_of_line = unset
