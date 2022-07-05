@@ -7,7 +7,7 @@ import ViewCreate from './components/ViewCreate';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/work_management_app'>
       <Routes>
         <Route index path="/" element={<ViewMain />} />
         <Route path="create" element={<ViewCreate />} />
