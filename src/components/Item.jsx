@@ -15,37 +15,37 @@ function Item(props) {
   }, [unit, description, price]);
 
   return (
-    <tr>
-      <td className="px-6 py-4 whitespace-nowrap">
+    <div className="table-row">
+      <div className="table-cell border">
         <input
-          className="p-2 m-0 rounded-full"
+          className="pl-2"
           type="number"
           value={unit}
-          onChange={(e) => setUnit(e.target.value)}
+          onChange={(e) => setUnit(parseInt(e.target.value))}
         />
-      </td>
-      <td>
+      </div>
+      <div className='table-cell w-auto border'>
         <input
-          className="p-1 m-0 rounded-full"
+          className="pl-2"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-      </td>
-      <td>
+      </div>
+      <div className="table-cell w-auto border">
         <input
-          className="p-1 m-0 rounded-full "
+          className="pl-2"
           type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-      </td>
-      <td>
+      </div>
+      <div className='table-cell border'>
         <button
-          className='bg-red-400 hover:bg-red-50 text-white rounded-full px-2'
+          className='bg-red-400 hover:bg-red-500 text-white rounded-full px-2'
           onClick={() => props.deleteItem({ id: props.id })}>X</button>
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 }
 export default Item;
