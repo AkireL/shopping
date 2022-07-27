@@ -3,6 +3,7 @@ import Item from './Item';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/solid';
+import Alert from './Alert';
 
 function ViewCreate() {
   let params = useParams();
@@ -10,6 +11,10 @@ function ViewCreate() {
   const [listItems, setListItems] = useState([]);
   const [title, setTitle] = useState('');
   const [createdAt, setCreatedAt] = useState((new Date()));
+
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(function () {
     if (!params.publicId) {
@@ -40,24 +45,13 @@ function ViewCreate() {
     };
 
     setListItems(arrayNew);
+    setShowAlert(true);
+    setMessage('Item actualizado');
   }
 
-  function deleteItem(item) {
-    const tmp = listItems.filter((e) => e.id != item.id);
-
+  function deleteItem(obj) {
+    const tmp = listItems.filter((e) => e.id !== obj.id);
     setListItems([...tmp]);
-
-    let data = JSON.parse(window.localStorage.getItem('data'));
-
-    let index = data.findIndex((v) => v.publicId == publicId);
-
-    console.log('index'.index);
-    if (index === -1) {
-      return;
-    }
-
-    data[index] = { publicId, title, listItems: tmp, createdAt };
-    window.localStorage.setItem('data', JSON.stringify(data));
   }
 
   function handleCreate() {
@@ -83,6 +77,8 @@ function ViewCreate() {
     data[index] = { publicId, title, listItems: listItems, createdAt };
 
     window.localStorage.setItem('data', JSON.stringify(data));
+    setShowAlert(true);
+    setMessage('Lista guardada');
   }
 
   return (
@@ -96,6 +92,8 @@ function ViewCreate() {
           <ArrowLeftIcon className="h-4 w-4"></ArrowLeftIcon>
         </Link>
       </p>
+      {/* <Alert open={showAlert} text={message}></Alert> */}
+
       <p className='text-right text-gray-500 mb-1'>{createdAt.toLocaleDateString('us-EN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
 
       <label className="relative block">
@@ -120,9 +118,6 @@ function ViewCreate() {
                 <div className="table-header-group bg-gray-200 text-gray-500">
                   <div className="table-row">
                     <div className="text-sm table-cell w-auto border text-center">
-                      Unidades
-                    </div>
-                    <div className="text-sm table-cell w-auto border text-center">
                       Descripción
                     </div>
                     <div className="text-sm table-cell w-auto border text-center">
@@ -132,12 +127,12 @@ function ViewCreate() {
                   </div>
                 </div>
                 <div className="table-row-group bg-white divide-y divide-gray-200">
-                  {listItems.map((item, i) => (
+                  {listItems.map((item) => (
                     <Item
-                      key={i}
+                      key={item.id}
                       {...item}
                       updateList={updateList}
-                      deleteItem={() => deleteItem(item)}
+                      deleteItem={deleteItem}
                     ></Item>
                   ))}
 
@@ -145,7 +140,7 @@ function ViewCreate() {
                     <div className="table-cell"></div>
                     <div className="table-cell"></div>
                     <div className="table-cell text-right">
-                      $ {listItems.reduce((prev, curr) => parseFloat(prev) + parseFloat(curr.price), 0)|| 0}
+                      $ {listItems.filter(item => !!item.price).reduce((prev, curr) => parseFloat(prev) + parseFloat(curr.price), 0) || 0}
                     </div>
                     <div className="table-cell"></div>
                   </div>
