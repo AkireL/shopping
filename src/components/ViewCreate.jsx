@@ -3,18 +3,15 @@ import Item from './Item';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/solid';
-import Alert from './Alert';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ViewCreate() {
   let params = useParams();
   const [publicId, setPublicId] = useState(params.publicId || uuidv4());
   const [listItems, setListItems] = useState([]);
   const [title, setTitle] = useState('');
-  const [createdAt, setCreatedAt] = useState((new Date()));
-
-
-  const [showAlert, setShowAlert] = useState(false);
-  const [message, setMessage] = useState('');
+  const [createdAt, setCreatedAt] = useState(new Date());
 
   useEffect(function () {
     if (!params.publicId) {
@@ -28,7 +25,7 @@ function ViewCreate() {
     setPublicId(item.publicId);
     setListItems(item.listItems);
     setTitle(item.title);
-    setCreatedAt(item.createdAt ? new Date(item.createdAt): createdAt);
+    setCreatedAt(item.createdAt ? new Date(item.createdAt) : createdAt);
   }, []);
 
   function updateList(item) {
@@ -45,8 +42,6 @@ function ViewCreate() {
     };
 
     setListItems(arrayNew);
-    setShowAlert(true);
-    setMessage('Item actualizado');
   }
 
   function deleteItem(obj) {
@@ -77,13 +72,23 @@ function ViewCreate() {
     data[index] = { publicId, title, listItems: listItems, createdAt };
 
     window.localStorage.setItem('data', JSON.stringify(data));
-    setShowAlert(true);
-    setMessage('Lista guardada');
+
+    toast.success('Cambios guardados', {
+      position: 'top-left',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   }
 
   return (
     <div className="container mx-auto p-8 m-10 items-center min-h-screen bg-gray-100">
-      <h2 className='text-center font-medium font-bold text-gray-500 text-2xl'>Lista</h2>
+      <h2 className="text-center font-medium font-bold text-gray-500 text-2xl">
+        Lista
+      </h2>
       <p className="pb-5">
         <Link
           to="/"
@@ -94,7 +99,14 @@ function ViewCreate() {
       </p>
       {/* <Alert open={showAlert} text={message}></Alert> */}
 
-      <p className='text-right text-gray-500 mb-1'>{createdAt.toLocaleDateString('us-EN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      <p className="text-right text-gray-500 mb-1">
+        {createdAt.toLocaleDateString('us-EN', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </p>
 
       <label className="relative block">
         <span className="sr-only">Titulo</span>
@@ -138,9 +150,15 @@ function ViewCreate() {
 
                   <div className="table-row" key="fin">
                     <div className="table-cell"></div>
-                    <div className="table-cell"></div>
                     <div className="table-cell text-right">
-                      $ {listItems.filter(item => !!item.price).reduce((prev, curr) => parseFloat(prev) + parseFloat(curr.price), 0) || 0}
+                      ${' '}
+                      {listItems
+                        .filter((item) => !!item.price)
+                        .reduce(
+                          (prev, curr) =>
+                            parseFloat(prev) + parseFloat(curr.price),
+                          0
+                        ) || 0}
                     </div>
                     <div className="table-cell"></div>
                   </div>
@@ -169,6 +187,17 @@ function ViewCreate() {
           Guardar
         </button>
       </div>
+      <ToastContainer
+        position="top-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }
