@@ -97,17 +97,6 @@ function ViewCreate() {
           <ArrowLeftIcon className="h-4 w-4"></ArrowLeftIcon>
         </Link>
       </p>
-      {/* <Alert open={showAlert} text={message}></Alert> */}
-
-      <p className="text-right text-gray-500 mb-1">
-        {createdAt.toLocaleDateString('us-EN', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
-      </p>
-
       <label className="relative block">
         <span className="sr-only">Titulo</span>
         <span className="absolute inset-y-0 left-0 flex items-center pl-2">
