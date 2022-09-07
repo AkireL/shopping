@@ -5,20 +5,27 @@ import {
   PlusCircleIcon,
   TrashIcon,
 } from '@heroicons/react/solid';
+import { KEY_DATA_OF_LOCAL_STORAGE } from '../constantes';
 
 function ViewMain() {
   const [listShopping, setListShopping] = useState(
-    JSON.parse(window.localStorage.getItem('data')) || []
+    JSON.parse(window.localStorage.getItem(KEY_DATA_OF_LOCAL_STORAGE)) || []
   );
 
   useEffect(function () {
-    window.localStorage.setItem('data', JSON.stringify(listShopping));
+    window.localStorage.setItem(KEY_DATA_OF_LOCAL_STORAGE, JSON.stringify(listShopping));
   }, []);
 
   function handleDelete(item) {
     let list = listShopping.filter((e) => e.publicId !== item.publicId);
     setListShopping([...list]);
-    window.localStorage.setItem('data', JSON.stringify(list));
+    window.localStorage.setItem(KEY_DATA_OF_LOCAL_STORAGE, JSON.stringify(list));
+  }
+
+  function sortDesc (a, b) {
+    var dateA = new Date(a.createdAt).getTime();
+    var dateB = new Date(b.createdAt).getTime();
+    return dateA > dateB ? -1 : 1;
   }
 
   return (
@@ -28,7 +35,7 @@ function ViewMain() {
         <p className="p-2">
           <Link
             to="/create"
-            className="text-white bg-green-400 hover:bg-green-500 font-medium rounded-full text-sm px-6 py-1 text-center inline-flex items-center mr-1 mb-1"
+            className="custom-link bg-green-400 hover:bg-green-500  px-6 py-1"
           >
             <PlusCircleIcon className="h-6 w-6"></PlusCircleIcon>
           </Link>
@@ -36,32 +43,32 @@ function ViewMain() {
         <table className="table w-full border">
           <thead className="table-header-group bg-gray-200 text-gray-500 font-light border">
             <tr className="table-row border">
-              <th className="border text-sm table-cell text-center font-medium">Title</th>
-              <th className="border text-sm table-cell text-center font-medium"># items</th>
-              <th className="border text-sm table-cell text-center font-medium">$</th>
-              <th className="border text-sm table-cell text-center font-medium"></th>
+              <th className="th-custom-table">Titulo</th>
+              <th className="th-custom-table"># artículos</th>
+              <th className="th-custom-table">Cantidad</th>
+              <th className="th-custom-table"></th>
             </tr>
           </thead>
           <tbody className="table-row-group bg-white divide-y divide-gray-200 border">
-            {listShopping.sort().map((item, i) => (
+            {listShopping.sort(sortDesc).map((item, i) => (
               <tr className="table-row border" key={i}>
                 <td className="table-cell border pl-2">{item.title}</td>
-                <td className="table-cell border pl-2">
+                <td className="table-cell border pl-2 text-center w-15">
                   {item.listItems.length}
                 </td>
-                <td className="table-cell border pl-2">
-                  {item.listItems.reduce((prev, curr) => prev + curr.price, 0)}
+                <td className="table-cell border pl-2 text-center w-15">
+                  ${item.listItems.reduce((prev, curr) => prev + curr.price, 0)}
                 </td>
                 <td className="pl-2">
                   <Link
                     to={`/items/${item.publicId}`}
-                    className="text-white bg-blue-400 hover:bg-blue-500 font-medium rounded-full text-sm px-2 py-1.5 text-center inline-flex items-center mr-1 mb-1"
+                    className="custom-link bg-blue-400 hover:bg-blue-500"
                   >
                     <PencilAltIcon className="h-6 w-6"></PencilAltIcon>
                   </Link>
                   <button
                     onClick={() => handleDelete(item)}
-                    className="text-white bg-red-400 hover:bg-red-500 font-medium rounded-full text-sm px-2 py-1.5 text-center inline-flex items-center mr-1 mb-1"
+                    className="custom-link bg-red-400 hover:bg-red-500"
                   >
                     <TrashIcon className="h-6 w-6"></TrashIcon>
                   </button>

@@ -16,25 +16,25 @@ function Item(props) {
 
   return (
     <div className="table-row">
-      <div className='table-cell w-auto border'>
+      <div className='table-cell w-80 border'>
         <input
-          className="pl-2"
+          className="pl-2 w-full"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
-      <div className="table-cell w-auto border">
+      <div className="table-cell border">
         <input
-          className="pl-2"
+          className="w-20"
           type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
       </div>
-      <div className='table-cell border'>
+      <div className='table-cell border px-3'>
         <button
-          className='bg-red-400 hover:bg-red-500 text-white rounded-full px-2'
+          className='bg-red-400 hover:bg-red-500 text-white rounded-full px-2 text-sm'
           onClick={() => props.deleteItem({ id: props.id, description })}>X</button>
       </div>
     </div>

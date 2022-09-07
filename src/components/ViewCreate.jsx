@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/solid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { KEY_DATA_OF_LOCAL_STORAGE } from '../constantes';
 
 function ViewCreate() {
   let params = useParams();
@@ -49,7 +50,7 @@ function ViewCreate() {
     setListItems([...tmp]);
   }
 
-  function handleCreate() {
+  function handleAdd() {
     setListItems([
       ...listItems,
       { id: uuidv4(), unit: 0, description: '', price: 0 },
@@ -57,7 +58,7 @@ function ViewCreate() {
   }
 
   function handleSave() {
-    let data = JSON.parse(window.localStorage.getItem('data'));
+    let data = JSON.parse(window.localStorage.getItem(KEY_DATA_OF_LOCAL_STORAGE));
 
     let index = data.findIndex((v) => v.publicId === publicId);
 
@@ -71,7 +72,7 @@ function ViewCreate() {
 
     data[index] = { publicId, title, listItems: listItems, createdAt };
 
-    window.localStorage.setItem('data', JSON.stringify(data));
+    window.localStorage.setItem(KEY_DATA_OF_LOCAL_STORAGE, JSON.stringify(data));
 
     toast.success('Cambios guardados', {
       position: 'top-left',
@@ -86,18 +87,18 @@ function ViewCreate() {
 
   return (
     <div className="container mx-auto p-8 m-10 items-center min-h-screen bg-gray-100">
-      <h2 className="text-center font-medium font-bold text-gray-500 text-2xl">
+      <h2 className="text-center font-bold text-gray-500 text-2xl">
         Lista
       </h2>
       <p className="pb-5">
         <Link
           to="/"
-          className="text-white bg-green-400 hover:bg-green-500 font-medium rounded-full text-sm px-5 py-2 text-center inline-flex items-center mr-1 mb-1"
+          className="bg-green-400 hover:bg-green-500  custom-link px-5 py-2"
         >
           <ArrowLeftIcon className="h-4 w-4"></ArrowLeftIcon>
         </Link>
       </p>
-      <label className="relative block">
+      <label className="relative sm:block flex flex-col items-center">
         <span className="sr-only">Titulo</span>
         <span className="absolute inset-y-0 left-0 flex items-center pl-2">
           <svg className="h-5 w-5 fill-slate-300"></svg>
@@ -112,16 +113,16 @@ function ViewCreate() {
       </label>
 
       <div className="flex flex-col">
-        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+        <div className="sm:overflow-x-auto sm:mx-6 lg:mx-8">
+          <div className="inline-block w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               <div className="table w-full my-3 border">
                 <div className="table-header-group bg-gray-200 text-gray-500">
                   <div className="table-row">
-                    <div className="text-sm table-cell w-auto border text-center">
+                    <div className="text-sm table-cell w-2/3 border text-center">
                       Descripción
                     </div>
-                    <div className="text-sm table-cell w-auto border text-center">
+                    <div className="text-sm table-cell w-1/3 border text-center">
                       Precio
                     </div>
                     <div></div>
@@ -137,9 +138,9 @@ function ViewCreate() {
                     ></Item>
                   ))}
 
-                  <div className="table-row" key="fin">
+                  <div className="table-row bg-blue-400" key="fin">
                     <div className="table-cell"></div>
-                    <div className="table-cell text-right">
+                    <div className="table-cell">
                       ${' '}
                       {listItems
                         .filter((item) => !!item.price)
@@ -161,7 +162,7 @@ function ViewCreate() {
       <div className="flex flex-row pl-2">
         <button
           className="rounded-full bg-blue-400 text-white h-10 w-10 hover:bg-blue-500"
-          onClick={handleCreate}
+          onClick={handleAdd}
         >
           +
         </button>
@@ -172,7 +173,6 @@ function ViewCreate() {
           className="rounded-full bg-green-400 text-white h-10 w-60 hover:bg-green-500 full"
           onClick={handleSave}
         >
-          {' '}
           Guardar
         </button>
       </div>
