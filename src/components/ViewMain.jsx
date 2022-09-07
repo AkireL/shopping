@@ -64,13 +64,13 @@ function ViewMain() {
                     to={`/items/${item.publicId}`}
                     className="custom-link bg-blue-400 hover:bg-blue-500"
                   >
-                    <PencilAltIcon className="h-6 w-6"></PencilAltIcon>
+                    <PencilAltIcon className="h-4 w-4"></PencilAltIcon>
                   </Link>
                   <button
                     onClick={() => handleDelete(item)}
                     className="custom-link bg-red-400 hover:bg-red-500"
                   >
-                    <TrashIcon className="h-6 w-6"></TrashIcon>
+                    <TrashIcon className="h-4 w-4"></TrashIcon>
                   </button>
                 </td>
               </tr>
