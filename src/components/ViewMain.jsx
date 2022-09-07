@@ -44,8 +44,8 @@ function ViewMain() {
           <thead className="table-header-group bg-gray-200 text-gray-500 font-light border">
             <tr className="table-row border">
               <th className="th-custom-table">Titulo</th>
-              <th className="th-custom-table"># artículos</th>
-              <th className="th-custom-table">Cantidad</th>
+              <th className="th-custom-table"># art.</th>
+              <th className="th-custom-table">$</th>
               <th className="th-custom-table"></th>
             </tr>
           </thead>
@@ -53,10 +53,10 @@ function ViewMain() {
             {listShopping.sort(sortDesc).map((item, i) => (
               <tr className="table-row border" key={i}>
                 <td className="table-cell border pl-2">{item.title}</td>
-                <td className="table-cell border pl-2 text-center w-15">
+                <td className="table-cell md:text-center border w-15">
                   {item.listItems.length}
                 </td>
-                <td className="table-cell border pl-2 text-center w-15">
+                <td className="table-cell border w-15 md:text-center">
                   ${item.listItems.reduce((prev, curr) => prev + curr.price, 0)}
                 </td>
                 <td className="pl-2">
