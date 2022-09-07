@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .th-custom-table {
+        @apply border text-sm table-cell text-center font-medium;
+    }
+
+    .custom-link {
+        @apply text-white
+        font-medium
+        rounded-full
+        text-sm
+        px-2
+        py-1.5
+        text-center
+        inline-flex
+        items-center
+        mr-1
+        mb-1
+    }
+}
