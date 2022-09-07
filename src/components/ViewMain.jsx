@@ -53,10 +53,10 @@ function ViewMain() {
             {listShopping.sort(sortDesc).map((item, i) => (
               <tr className="table-row border" key={i}>
                 <td className="table-cell border pl-2">{item.title}</td>
-                <td className="table-cell md:text-center border w-15">
+                <td className="table-cell text-right border w-15">
                   {item.listItems.length}
                 </td>
-                <td className="table-cell border w-15 md:text-center">
+                <td className="table-cell border w-15 text-right">
                   ${item.listItems.reduce((prev, curr) => prev + curr.price, 0)}
                 </td>
                 <td className="pl-2">
