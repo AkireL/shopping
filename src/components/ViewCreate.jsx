@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import Item from './Item';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/solid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { KEY_DATA_OF_LOCAL_STORAGE } from '../constantes';
+import Table from './Table';
 
 function ViewCreate() {
   let params = useParams();
@@ -53,7 +53,7 @@ function ViewCreate() {
   function handleAdd() {
     setListItems([
       ...listItems,
-      { id: uuidv4(), unit: 0, description: '', price: 0 },
+      { id: uuidv4(), unit: 0, description: '', price: 0},
     ]);
   }
 
@@ -111,52 +111,10 @@ function ViewCreate() {
           onChange={(e) => setTitle(e.target.value)}
         />
       </label>
+      <Table listItems={listItems.filter(item => ! item.checked)} updateList={updateList} deleteItem={deleteItem}></Table>
 
-      <div className="flex flex-col">
-        <div className="sm:overflow-x-auto sm:mx-6 lg:mx-8">
-          <div className="inline-block w-full sm:px-6 lg:px-8">
-            <div className="overflow-hidden">
-              <div className="table w-full my-3 border">
-                <div className="table-header-group bg-gray-200 text-gray-500">
-                  <div className="table-row">
-                    <div className="text-sm table-cell w-2/3 border text-center">
-                      Descripción
-                    </div>
-                    <div className="text-sm table-cell w-1/3 border text-center">
-                      Precio
-                    </div>
-                    <div></div>
-                  </div>
-                </div>
-                <div className="table-row-group bg-white divide-y divide-gray-200">
-                  {listItems.map((item) => (
-                    <Item
-                      key={item.id}
-                      {...item}
-                      updateList={updateList}
-                      deleteItem={deleteItem}
-                    ></Item>
-                  ))}
-
-                  <div className="table-row bg-blue-400" key="fin">
-                    <div className="table-cell"></div>
-                    <div className="table-cell">
-                      ${' '}
-                      {listItems
-                        .filter((item) => !!item.price)
-                        .reduce(
-                          (prev, curr) =>
-                            parseFloat(prev) + parseFloat(curr.price),
-                          0
-                        ) || 0}
-                    </div>
-                    <div className="table-cell"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className='pt-20'>
+        <Table head='bg-green-500' listItems={listItems.filter(item => item.checked)} updateList={updateList} deleteItem={deleteItem}></Table>
       </div>
 
       <div className="flex flex-row pl-2">

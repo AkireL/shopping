@@ -4,6 +4,7 @@ function Item(props) {
   const [unit] = useState(props.unit | 0);
   const [description, setDescription] = useState(props.description);
   const [price, setPrice] = useState(props.price | 0);
+  const [checked, setChecked] = useState(props.checked | false);
 
   useEffect(() => {
     props.updateList({
@@ -11,22 +12,26 @@ function Item(props) {
       unit,
       description,
       price: parseFloat(price),
+      checked: checked,
     });
-  }, [unit, description, price]);
+  }, [unit, description, price, checked]);
 
   return (
     <div className="table-row">
+      <div className='table-cell w-10 border px-2'>
+        <input checked={checked} type="checkbox" onChange={() => setChecked(! checked)}></input>
+      </div>
       <div className='table-cell w-80 border'>
         <input
-          className="pl-2 w-full"
+          className="pl-1 w-full"
           type="text"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
-      <div className="table-cell border">
+      <div className="table-cell w-10 border">
         <input
-          className="w-20"
+          className="pl-1 w-full"
           type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
