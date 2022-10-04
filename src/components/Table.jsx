@@ -35,7 +35,7 @@ function Table(props) {
           </div>
         </div>
       </div>
-      <div className={`text-right xs:text-left mx-16 ${props.head ? props.head : 'bg-blue-400'}`}>
+      <div className={`text-right md:mx-16 ${props.head ? props.head : 'bg-blue-400'}`}>
         ${' '}
         {props.listItems
           .filter((item) => !!item.price)

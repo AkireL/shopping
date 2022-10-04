@@ -113,10 +113,6 @@ function ViewCreate() {
       </label>
       <Table listItems={listItems.filter(item => ! item.checked)} updateList={updateList} deleteItem={deleteItem}></Table>
 
-      <div className='pt-20'>
-        <Table head='bg-green-500' listItems={listItems.filter(item => item.checked)} updateList={updateList} deleteItem={deleteItem}></Table>
-      </div>
-
       <div className="flex flex-row pl-2">
         <button
           className="rounded-full bg-blue-400 text-white h-10 w-10 hover:bg-blue-500"
@@ -126,7 +122,11 @@ function ViewCreate() {
         </button>
       </div>
 
-      <div className="flex flex-col items-center justify-center">
+      <div className='pt-20'>
+        <Table head='bg-green-500' listItems={listItems.filter(item => item.checked)} updateList={updateList} deleteItem={deleteItem}></Table>
+      </div>
+
+      <div className="flex flex-col items-center justify-center mt-5">
         <button
           className="rounded-full bg-green-400 text-white h-10 w-60 hover:bg-green-500 full"
           onClick={handleSave}
@@ -134,6 +134,7 @@ function ViewCreate() {
           Guardar
         </button>
       </div>
+
       <ToastContainer
         position="top-left"
         autoClose={5000}
