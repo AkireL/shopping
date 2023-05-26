@@ -25,11 +25,7 @@ function ImportItem({ onLoadList }) {
       const newItem = JSON.parse(text);
       const lastItems = JSON.parse(window.localStorage.getItem(KEY_DATA_OF_LOCAL_STORAGE));
 
-      const index = lastItems.findIndex(v => v.publicId === newItem.publicId);
-
-      if (index ===-1) {
-        newItem.publicId = uuidv4();
-      }
+      newItem.publicId = uuidv4();
 
       const result = [...lastItems, newItem];
 
