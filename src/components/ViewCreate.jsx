@@ -50,7 +50,7 @@ function ViewCreate() {
     setListItems([...tmp]);
   }
 
-  function handleAdd() {
+  function handleAddNew() {
     setListItems([
       ...listItems,
       { id: uuidv4(), unit: 0, description: '', price: 0},
@@ -63,16 +63,21 @@ function ViewCreate() {
     let index = data.findIndex((v) => v.publicId === publicId);
 
     if (index === -1) {
+      let dataTmp = [...data, { publicId, title, listItems, createdAt }];
       window.localStorage.setItem(
-        'data',
-        JSON.stringify([...data, { publicId, title, listItems, createdAt }])
+        KEY_DATA_OF_LOCAL_STORAGE,
+        JSON.stringify(dataTmp)
       );
+
       return;
     }
 
     data[index] = { publicId, title, listItems: listItems, createdAt };
 
-    window.localStorage.setItem(KEY_DATA_OF_LOCAL_STORAGE, JSON.stringify(data));
+    window.localStorage.setItem(
+      KEY_DATA_OF_LOCAL_STORAGE,
+      JSON.stringify(data)
+    );
 
     toast.success('Cambios guardados', {
       position: 'top-left',
@@ -83,6 +88,36 @@ function ViewCreate() {
       draggable: true,
       progress: undefined,
     });
+  }
+
+  function exporting()
+  {
+    const content = JSON.stringify({publicId, title, listItems, createdAt});
+
+    if (listItems.length<=0 ){
+      toast.info('No hay artículos', {
+        position: 'top-left',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      return;
+    }
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+    element.setAttribute('download', Date.now());
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
   }
 
   return (
@@ -98,6 +133,7 @@ function ViewCreate() {
           <ArrowLeftIcon className="h-4 w-4"></ArrowLeftIcon>
         </Link>
       </p>
+      <button className="bg-blue-600 hover:bg-blue-200 custom-link px5-py-2" onClick={exporting}>Exportar</button>
       <label className="relative sm:block flex flex-col items-center">
         <span className="sr-only">Titulo</span>
         <span className="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -116,7 +152,7 @@ function ViewCreate() {
       <div className="flex flex-row pl-2">
         <button
           className="rounded-full bg-blue-400 text-white h-10 w-10 hover:bg-blue-500"
-          onClick={handleAdd}
+          onClick={handleAddNew}
         >
           +
         </button>
