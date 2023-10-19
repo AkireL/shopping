@@ -94,14 +94,9 @@ function ImportItem({ onLoadList }) {
       </div>
       <ToastContainer
         position="top-left"
-        autoClose={5000}
-        hideProgressBar={false}
+        autoClose={10}
+        hideProgressBar={true}
         newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
       />
 
       <button type="button" onClick={() => onClick()} className='bg-blue-800 hover:bg-blue-200 custom-link px-2 py-2'>Importar</button>

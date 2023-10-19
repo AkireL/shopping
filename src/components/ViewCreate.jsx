@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeftIcon } from '@heroicons/react/solid';
+import { ArrowLeftIcon, PlusIcon } from '@heroicons/react/solid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { KEY_DATA_OF_LOCAL_STORAGE } from '../constantes';
@@ -16,6 +16,7 @@ function ViewCreate() {
 
   useEffect(function () {
     if (!params.publicId) {
+      setTitle((new Date()).toLocaleDateString());
       return;
     }
 
@@ -25,7 +26,7 @@ function ViewCreate() {
 
     setPublicId(item.publicId);
     setListItems(item.listItems);
-    setTitle(item.title);
+    setTitle(item.title ?? new Date(item.createdAt).toLocaleDateString());
     setCreatedAt(item.createdAt ? new Date(item.createdAt) : createdAt);
   }, []);
 
@@ -53,7 +54,7 @@ function ViewCreate() {
   function handleAddNew() {
     setListItems([
       ...listItems,
-      { id: uuidv4(), unit: 0, description: '', price: 0},
+      { id: uuidv4(), unit: 0, description: '', price: ''},
     ]);
   }
 
@@ -122,9 +123,6 @@ function ViewCreate() {
 
   return (
     <div className="container mx-auto p-8 m-10 items-center min-h-screen bg-gray-100">
-      <h2 className="text-center font-bold text-gray-500 text-2xl">
-        Lista
-      </h2>
       <p className="pb-5">
         <Link
           to="/"
@@ -133,7 +131,6 @@ function ViewCreate() {
           <ArrowLeftIcon className="h-4 w-4"></ArrowLeftIcon>
         </Link>
       </p>
-      <button className="bg-blue-600 hover:bg-blue-200 custom-link px5-py-2" onClick={exporting}>Exportar</button>
       <label className="relative sm:block flex flex-col items-center">
         <span className="sr-only">Titulo</span>
         <span className="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -147,18 +144,27 @@ function ViewCreate() {
           onChange={(e) => setTitle(e.target.value)}
         />
       </label>
+
+      <div className="pb-1 pt-1">
+        <a
+          onClick={handleAddNew}
+          className="bg-blue-400 hover:bg-blue-500  custom-link px-5 py-2"
+        >
+          <PlusIcon className="h-4 w-4"></PlusIcon>
+        </a>
+      </div>
       <Table listItems={listItems.filter(item => ! item.checked)} updateList={updateList} deleteItem={deleteItem}></Table>
 
-      <div className="flex flex-row pl-2">
-        <button
-          className="rounded-full bg-blue-400 text-white h-10 w-10 hover:bg-blue-500"
+      <div className="flex flex-row pl-2 pt-1">
+        <a
           onClick={handleAddNew}
+          className="bg-blue-400 hover:bg-blue-500  custom-link px-5 py-2"
         >
-          +
-        </button>
+          <PlusIcon className="h-4 w-4"></PlusIcon>
+        </a>
       </div>
 
-      <div className='pt-20'>
+      <div className='mt-10'>
         <Table head='bg-green-500' listItems={listItems.filter(item => item.checked)} updateList={updateList} deleteItem={deleteItem}></Table>
       </div>
 
@@ -173,14 +179,9 @@ function ViewCreate() {
 
       <ToastContainer
         position="top-left"
-        autoClose={5000}
-        hideProgressBar={false}
+        autoClose={10}
+        hideProgressBar={true}
         newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
       />
     </div>
   );

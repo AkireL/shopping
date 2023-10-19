@@ -7,7 +7,7 @@ function Table(props) {
         <div className="sm:overflow-x-auto sm:mx-6 lg:mx-8">
           <div className="inline-block w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
-              <div className="table w-full mt-3 border">
+              <div className="table w-full border">
                 <div className="table-header-group bg-gray-200 text-gray-500">
                   <div className="table-row">
                     <div className="w-2/3 border text-center"></div>
@@ -35,10 +35,10 @@ function Table(props) {
           </div>
         </div>
       </div>
-      <div className={`text-right md:mx-16 ${props.head ? props.head : 'bg-blue-400'}`}>
+      <div className={`text-right md:mx-16 p-1 ${props.head ? props.head : 'bg-blue-400'}`}>
         ${' '}
         {props.listItems
-          .filter((item) => !!item.price)
+          .filter((item) => Boolean(item.price || 0))
           .reduce(
             (prev, curr) => parseFloat(prev) + parseFloat(curr.price),
             0

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 function Item(props) {
   const [unit] = useState(props.unit || 0);
   const [description, setDescription] = useState(props.description);
-  const [price, setPrice] = useState(props.price || 0);
+  const [price, setPrice] = useState(props.price || ''  );
   const [checked, setChecked] = useState(props.checked || false);
 
   useEffect(() => {

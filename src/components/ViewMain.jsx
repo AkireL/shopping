@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import {
+  ClipboardCopyIcon,
   PencilAltIcon,
   PlusCircleIcon,
   TrashIcon,
@@ -21,6 +23,16 @@ function ViewMain() {
     let list = listShopping.filter((e) => e.publicId !== item.publicId);
     setListShopping([...list]);
     window.localStorage.setItem(KEY_DATA_OF_LOCAL_STORAGE, JSON.stringify(list));
+  }
+
+  function handleDuplicate(item) {
+    let newItem = {...JSON.parse(JSON.stringify(item)), publicId:uuidv4()};
+    newItem.listItems = newItem.listItems.map(function (row) {
+      return { ...row, id:uuidv4(), checked:false, price:''};
+    });
+
+    setListShopping([...listShopping, newItem]);
+    window.localStorage.setItem(KEY_DATA_OF_LOCAL_STORAGE, JSON.stringify([...listShopping, newItem]));
   }
 
   function sortDesc (a, b) {
@@ -65,7 +77,7 @@ function ViewMain() {
                   {item.listItems.length}
                 </td>
                 <td className="table-cell border w-15 text-right">
-                  ${item.listItems.reduce((prev, curr) => prev + curr.price, 0)}
+                  ${item.listItems.filter((item) => Boolean(item.price || 0)).reduce((prev, curr) => prev + curr.price || 0, 0)}
                 </td>
                 <td className="pl-2">
                   <Link
@@ -79,6 +91,12 @@ function ViewMain() {
                     className="custom-link bg-red-400 hover:bg-red-500"
                   >
                     <TrashIcon className="h-4 w-4"></TrashIcon>
+                  </button>
+                  <button
+                    onClick={() => handleDuplicate(item)}
+                    className="custom-link bg-red-400 hover:bg-red-500"
+                  >
+                    <ClipboardCopyIcon className="h-4 w-4"></ClipboardCopyIcon>
                   </button>
                 </td>
               </tr>
