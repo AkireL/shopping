@@ -8,7 +8,6 @@ import {
   TrashIcon,
 } from '@heroicons/react/solid';
 import { KEY_DATA_OF_LOCAL_STORAGE } from '../constantes';
-import ImportItem from './ImportItem';
 
 function ViewMain() {
   const [listShopping, setListShopping] = useState(
@@ -26,7 +25,7 @@ function ViewMain() {
   }
 
   function handleDuplicate(item) {
-    let newItem = {...JSON.parse(JSON.stringify(item)), publicId:uuidv4()};
+    let newItem = {...JSON.parse(JSON.stringify(item)), publicId:uuidv4(), createdAt: new Date(), title: (item.title + '(copy)') };
     newItem.listItems = newItem.listItems.map(function (row) {
       return { ...row, id:uuidv4(), checked:false, price:''};
     });
@@ -41,15 +40,11 @@ function ViewMain() {
     return dateA > dateB ? -1 : 1;
   }
 
-  function onLoadList()
-  {
-    setListShopping(JSON.parse(window.localStorage.getItem(KEY_DATA_OF_LOCAL_STORAGE)) || []);
-  }
-
   return (
     <>
       <div className="container mx-auto p-8 m-10 min-h-screen bg-gray-100">
         <h1 className="text-2xl normal-case text-center font-bold text-gray-500">Compras</h1>
+        <div id="img"></div>
         <div className='flex justify-between'>
           <p className="p-2">
             <Link
@@ -58,7 +53,6 @@ function ViewMain() {
               <PlusCircleIcon className="h-6 w-6"></PlusCircleIcon>
             </Link>
           </p>
-          <ImportItem onLoadList={onLoadList}></ImportItem>
         </div>
         <table className="table w-full border">
           <thead className="table-header-group bg-gray-200 text-gray-500 font-light border">
@@ -94,7 +88,7 @@ function ViewMain() {
                   </button>
                   <button
                     onClick={() => handleDuplicate(item)}
-                    className="custom-link bg-red-400 hover:bg-red-500"
+                    className="custom-link bg-green-400 hover:bg-green-500"
                   >
                     <ClipboardCopyIcon className="h-4 w-4"></ClipboardCopyIcon>
                   </button>
